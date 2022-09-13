@@ -1,4 +1,4 @@
-import Course from './tutorial/2-useEffect/3-useEffect-fetchdata';
+import Course from './tutorial/3-conditionnal-render/03-show-hide';
 
 function App() {
   return (

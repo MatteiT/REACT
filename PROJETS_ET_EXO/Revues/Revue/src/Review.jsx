@@ -3,7 +3,7 @@ import { data } from './data';
 
 const Review = () => {
   const [index, setIndex] = useState(0);
-  const { id, name, job, image, text } = data[index];
+  const { name, job, image, text } = data[index];
   return (
     <article className="review">
       <div className="img-container">
