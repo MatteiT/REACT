@@ -27,7 +27,6 @@ const App = () => {
   }
 
   const { company, dates, duties, title } = jobs[value];
-  console.log(jobs);
 
   return (
     <section className="section">

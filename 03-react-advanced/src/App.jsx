@@ -1,4 +1,4 @@
-import Course from './tutorial/3-conditionnal-render/03-show-hide';
+import Course from './tutorial/4-Forms/2-multiple_inputs';
 
 function App() {
   return (
