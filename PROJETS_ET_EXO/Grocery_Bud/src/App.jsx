@@ -13,32 +13,63 @@ const Inputs = () => {
   const [people, setPeople] = useState(getLocalStorage());
   const [task, setTask] = useState('');
   const [edit, setEdit] = useState(false);
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(null);
+  const [alert, setAlert] = useState({ show: false, mesg: '', action: '' });
+  // console.log(people);
+
+  const showAlert = (show, mesg, action) => {
+    setAlert({ show, mesg, action });
+    setTimeout(() => setAlert({ show: false, mesg: '', action: '' }), 2000);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (task) {
-      const newItem = { id: new Date().getTime().toString(), task };
-      setPeople([...people, newItem]);
-    }
+    const newItem = { id: new Date().getTime().toString(), task: task };
+    setPeople([...people, newItem]);
+    setTask('');
+    showAlert(true, 'bien ajouter', 'success');
+  };
+
+  const handleEdit = (id) => {
+    setEdit(true);
+    const item = people.find((person) => person.id === id);
+    console.log(item.task);
+    setTask(item.task);
+    setId(id);
+  };
+
+  const newEdit = (e, id) => {
+    e.preventDefault();
+    setPeople(
+      people.map((person) => {
+        if (person.id === id) {
+          return { ...people, task: task };
+        }
+        return person;
+      })
+    );
+    showAlert(true, 'bien editer', 'success');
+    setEdit(false);
+    setTask('');
+    setId(null);
+  };
+
+  const deleteItem = (id) => {
+    const newPeople = [...people];
+    const peopleCopy = newPeople.filter((person) => {
+      if (person.id !== id) {
+        return person;
+      }
+    });
+    setPeople(peopleCopy);
+    showAlert(true, 'bien suppr', 'danger');
     setTask('');
     setEdit(false);
   };
 
-  const handleEdit = (e) => {
-    e.preventDefault();
-    if (edit) {
-      console.log('hello');
-    }
-  };
-
-  const deleteItem = (id) => {
-    console.log(e.target.id);
-    setPeople(people.filter((person) => person.id !== id));
-  };
-
   const clear = () => {
     setPeople([]);
+    showAlert(true, 'Tout est suppr', 'danger');
   };
 
   useEffect(() => {
@@ -49,7 +80,12 @@ const Inputs = () => {
     <>
       <section className="section-center">
         <form className="grocery-form">
-          <p className="alert"></p>
+          {alert.show ? (
+            <p className={`alert alert-${alert.action}`}>{alert.mesg}</p>
+          ) : (
+            ''
+          )}
+
           <h3>grocery bud</h3>
           <div className="form-control">
             <label htmlFor="firstname"></label>
@@ -60,8 +96,18 @@ const Inputs = () => {
               value={task}
               onChange={(e) => setTask(e.target.value)}
             />
-            <button type="submit" className="submit-btn" onClick={handleSubmit}>
-              ajouter
+            <button
+              type="submit"
+              className="submit-btn"
+              onClick={
+                edit
+                  ? (e) => {
+                      newEdit(e, id);
+                    }
+                  : handleSubmit
+              }
+            >
+              {edit ? 'editer' : 'ajouter'}
             </button>
           </div>
         </form>
@@ -75,14 +121,16 @@ const Inputs = () => {
                   <button
                     type="button"
                     className="edit-btn"
-                    onClick={handleEdit}
+                    onClick={() => {
+                      handleEdit(id);
+                    }}
                   >
                     <i className="fa-solid fa-pen-to-square"></i>
                   </button>
                   <button
                     type="button"
                     className="delete-btn"
-                    onClick={deleteItem}
+                    onClick={() => deleteItem(id)}
                   >
                     <i className="fa-solid fa-trash-can"></i>
                   </button>
