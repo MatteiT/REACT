@@ -1,4 +1,4 @@
-import Course from './tutorial/4-Forms/2-multiple_inputs';
+import Course from './tutorial/7-Use-Context/1-useContext';
 
 function App() {
   return (
