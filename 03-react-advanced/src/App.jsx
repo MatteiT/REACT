@@ -1,4 +1,4 @@
-import Course from './tutorial/7-Use-Context/1-useContext';
+import Course from './tutorial/8-react-routing/pages/Index';
 
 function App() {
   return (
