@@ -1,4 +1,4 @@
-import Course from './tutorial/8-react-routing/pages/Index';
+import Course from './tutorial/9-useRedeucer/index';
 
 function App() {
   return (
